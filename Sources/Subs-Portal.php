@@ -13,6 +13,77 @@
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
+// returns true if browser UA string matches known mobile UA string text.
+function CheckIfMobile()
+{
+	//if we don't have a useragent, assume we're not mobile.
+	if(isset($_SERVER['HTTP_USER_AGENT']))
+	{
+		$user_agent = strtolower($_SERVER['HTTP_USER_AGENT']);
+	} else {
+		return false;
+	}
+
+	//Smartphone UA strings. Trying to put more common towards the top
+	//so they will match sooner?
+	$ua_hints = array(
+		'mobi',
+		'android',
+		'phone',
+		'ipad',
+		'mini',
+		'tablet',
+		'ucbrowser',
+		'miui',
+		'blackberry',
+		'googletv',
+		'kindle',
+		'vnd.wap',
+		'wml',
+		'fennec',
+		'fxios',
+		'blazer',
+		'puffin',
+		'bolt',
+		'brew',
+		'hiptop',
+		'nintendo',
+		'xbox',
+		'playstation',
+		'midp',
+		'symbian',
+		'dorothy',
+		'gobrowser',
+		'netfront',
+		'iris',
+		'maemo',
+		'mib',
+		'netfront',
+		'semc-browser',
+		'up-browser',
+		'skyfire',
+		'teashark',
+		'teleca',
+		'uzardweb',
+		'ipod',
+		'palm',
+		'pda',
+	);
+
+	foreach ($ua_hints as $hint)
+	{
+		if(preg_match('/' . $hint . '/', $user_agent))
+		{
+			return true;
+		}
+
+	}
+
+	//No matches?  Not a known mobile UA string.
+	return false;
+
+}
+
 function sportal_init($standalone = false)
 {
 	global $context, $sourcedir, $scripturl, $modSettings, $txt;
